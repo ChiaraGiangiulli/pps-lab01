@@ -50,7 +50,7 @@ class SimpleBankAccountTest {
 
     @Test
     void testWithdraw() {
-        final int expectedBalance=30;
+        final int expectedBalance = 30 - SimpleBankAccount.WITHDRAWAL_FEE;
         bankAccount.deposit(accountHolder.getId(), INITIAL_DEPOSIT);
         bankAccount.withdraw(accountHolder.getId(), WITHDRAW);
         assertEquals(expectedBalance, bankAccount.getBalance());
@@ -69,12 +69,16 @@ class SimpleBankAccountTest {
     }
 
     @Test
-    void testWithdrawGreaterThanBalance() {
+    void testWithdrawGreaterThanOrEqualToBalance() {
         bankAccount.deposit(accountHolder.getId(), INITIAL_DEPOSIT);
         assertAll(
                 () -> assertThrows(
                         IllegalArgumentException.class,
                         () -> bankAccount.withdraw(ACCOUNT_ID, INITIAL_DEPOSIT + WITHDRAW)
+                ),
+                () -> assertThrows(
+                        IllegalArgumentException.class,
+                        () -> bankAccount.withdraw(ACCOUNT_ID, INITIAL_DEPOSIT)
                 ),
                 () -> assertEquals(INITIAL_DEPOSIT, bankAccount.getBalance())
         );
