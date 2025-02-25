@@ -28,14 +28,14 @@ public class SimpleBankAccount implements BankAccount {
     public void deposit(final int userID, final double amount) {
         if (checkUser(userID)) {
             this.balance += amount;
-        }
+        } else throw new IllegalArgumentException();
     }
 
     @Override
     public void withdraw(final int userID, final double amount) {
         if (checkUser(userID) && isWithdrawAllowed(amount)) {
             this.balance -= amount;
-        }
+        } else throw new IllegalArgumentException();
     }
 
     private boolean isWithdrawAllowed(final double amount){
